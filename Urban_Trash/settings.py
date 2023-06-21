@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'ScrapBooking',
     'Address',
     'rest_framework',
+    'rest_framework_simplejwt',
     # 'knox',
     # 'rest_framework_jwt',
     # 'channels',
