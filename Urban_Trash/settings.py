@@ -52,11 +52,11 @@ INSTALLED_APPS = [
     'ScrapBooking',
     'Address',
     'rest_framework',
-    'knox',
-    'rest_framework_jwt',
-    'channels',
-    'allauth',
-    'django_channels_notifications',
+    # 'knox',
+    # 'rest_framework_jwt',
+    # 'channels',
+    # 'allauth',
+    # 'django_channels_notifications',
     # 'rest_framework.authtoken',
 ]
 
@@ -165,7 +165,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTHENTICATION_BACKENDS = [

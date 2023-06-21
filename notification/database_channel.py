@@ -1,5 +1,5 @@
 from django_channels_notifications.core.channels.base_channel import BaseChannel
-from django_channels_notifications.models import DatabaseNotification
+from notification.models import DatabaseNotification
 
 
 class DatabaseChannel(BaseChannel):

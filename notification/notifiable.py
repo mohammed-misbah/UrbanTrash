@@ -1,4 +1,4 @@
-from django_channels_notifications.models import DatabaseNotification
+from notification.models import DatabaseNotification
 from django_channels_notifications.core.notification_sender import NotificationSender
 
 
