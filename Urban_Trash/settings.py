@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     # 'rest_framework_jwt',
     # 'channels',
     # 'allauth',
-    # 'notification',
     # 'rest_framework.authtoken',
 ]
 
