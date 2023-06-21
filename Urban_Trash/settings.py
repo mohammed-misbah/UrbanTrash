@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     # 'rest_framework_jwt',
     # 'channels',
     # 'allauth',
-    # 'django_channels_notifications',
+    # 'notification',
     # 'rest_framework.authtoken',
 ]
 
