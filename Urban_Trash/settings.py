@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'Address',
     'rest_framework',
     'rest_framework_simplejwt',
+    'corsheaders',
     # 'knox',
     # 'rest_framework_jwt',
     # 'channels',
