@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .serializers import UserSerializers,UserCreateSerializer
 from rest_framework import status
-from .models import AdminUser
+from .models import User
 import jwt , datetime
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
@@ -30,7 +30,7 @@ class LoginView(APIView):
             return Response({'status': 'Please provide the required details'})
 
         try:
-            user = AdminUser.objects.get(email=email)
+            user = User.objects.get(email=email)
             if not user.check_password(password):
                 raise AuthenticationFailed('Password is incorrect')
 
@@ -50,7 +50,7 @@ class LoginView(APIView):
             token = jwt.encode(payload, 'secret', algorithm='HS256')
 
             return Response({'status': "Success", 'payload': payload, 'admin_jwt': token, 'admin': userdetails}, status=status.HTTP_200_OK)
-        except AdminUser.DoesNotExist:
+        except User.DoesNotExist:
             raise AuthenticationFailed('Email or Password is incorrect')
 
 
@@ -70,7 +70,7 @@ class LogoutView(APIView):
 @api_view(['GET'])
 @extend_schema(responses=UserSerializers)
 def userlist(request):
-    user = AdminUser.objects.all()
+    user = User.objects.all()
     print("The user List is ==================>>>>>>>>>>>>>>>>>>>",user)
     serializer = UserCreateSerializer(user,many=True)
     return Response(serializer.data)
@@ -78,7 +78,7 @@ def userlist(request):
 
 @api_view(['PATCH'])
 def block_user(request, id):
-    user = AdminUser.objects.get(id=id)
+    user = User.objects.get(id=id)
     print(user)
     user.is_active = False
     user.save()
@@ -86,7 +86,7 @@ def block_user(request, id):
 
 @api_view(['PATCH'])
 def unblock_user(request, id):
-    user = AdminUser.objects.get(id=id)
+    user = User.objects.get(id=id)
     print(user)
     user.is_active = True
     user.save()

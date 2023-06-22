@@ -1,13 +1,14 @@
 from rest_framework.serializers import ModelSerializer
-from .models import AdminUser
+from .models import Notification
 from rest_framework import serializers
+from Account.models import User
 
 
 class UserSerializers(ModelSerializer):
     is_admin = serializers.BooleanField(default=True, write_only=True)
 
     class Meta:
-        model = AdminUser
+        model = User
         fields = ['id', 'name', 'email', 'password', 'is_admin']
         extra_kwargs = {
             'password': {'write_only': True}
@@ -28,5 +29,13 @@ class UserSerializers(ModelSerializer):
 
 class UserCreateSerializer(ModelSerializer):
     class Meta:
-        model = AdminUser
+        model = User
         fields = ['id','name','email','is_active']
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all()) 
+
+    class Meta:
+        model = Notification
+        fields = '__all__'

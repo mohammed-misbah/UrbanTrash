@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
+from Account.models import User
 import datetime
 
 # Create your models here.
@@ -7,25 +8,20 @@ import datetime
 current_date = datetime.date.today()
 
 
-class AdminUser(AbstractBaseUser):
-    name = models.CharField(max_length=200)
-    email = models.CharField(max_length=255, unique=True)
-    password = models.TextField()
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
-    signup_day = models.CharField(max_length=50, default=current_date.day)
-    signup_month = models.CharField(max_length=50, default=current_date.month)
-    signup_year = models.CharField(max_length=50, default=current_date.year)
-    first_name = None
-    last_name = None
-    username = None
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+class Notification(models.Model):
+    user =  models.ForeignKey(User,on_delete=models.CASCADE)
+    message = models.CharField(max_length=255)
+    room_name = models.CharField(max_length=50,null=False, default="user")
+    is_read = models.BooleanField(default=False)
+    read_at = models.DateTimeField(null=True, blank=True, verbose_name='Read At')
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Created At')
+    notification_day = models.CharField(max_length=50, default=current_date.day)
+    notification_month = models.CharField(max_length=50, default=current_date.month)
+    notification_year = models.CharField(max_length=50, default=current_date.year)
 
     def __str__(self) -> str:
-        return self.name
+        return self.user
+    
 
     
      

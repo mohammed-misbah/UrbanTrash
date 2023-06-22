@@ -29,10 +29,6 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # settings.py
-CORS_ORIGIN_ALLOW_ALL = True
-
-
-CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -84,6 +80,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Urban_Trash.urls'
 
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+
+CORS_ALLOW_CREDENTIALS = True
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -100,7 +102,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Urban_Trash.wsgi.application'
+# WSGI_APPLICATION = 'Urban_Trash.wsgi.application'
 ASGI_APPLICATION = 'Urban_Trash.asgi.application'
 
 
@@ -197,14 +199,29 @@ SPECTACULAR_SETTINGS ={
 }
 
 
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND" : 'channel_redis.core.RedisChannelLayer',
+#         "CONFIG" : {
+#             "hosts" : [('127.0.0.1', 6379)],
+#         },
+#     },
+# }
+
+
+
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND" : 'channel_redis.core.RedisChannelLayer',
-        "CONFIG" : {
-            "hosts" : [('127.0.0.1', 6379)],
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # Use InMemoryChannelLayer for local development
+    },
+    'redis': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
         },
     },
 }
+
 
 
 EMAIL_HOST = 'smtp.mailgun.org'  

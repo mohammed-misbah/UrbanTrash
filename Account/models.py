@@ -11,12 +11,13 @@ class User(AbstractBaseUser):
     password = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
     signup_day = models.CharField(max_length=50, default=current_date.day)
     signup_month = models.CharField(max_length=50, default=current_date.month)
     signup_year = models.CharField(max_length=50, default=current_date.year)
     is_blocked = models.BooleanField(default=False)
-    is_anonymous = False
     fromGoogle=models.BooleanField(default=False)
+    is_anonymous = False
     first_name = None
     last_name =None
     username= None
