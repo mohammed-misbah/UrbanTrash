@@ -50,10 +50,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'allauth',
     # 'knox',
     # 'rest_framework_jwt',
     # 'channels',
-    'allauth',
     # 'rest_framework.authtoken',
 ]
 
@@ -102,7 +102,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'Urban_Trash.wsgi.application'
+WSGI_APPLICATION = 'Urban_Trash.wsgi.application'
 ASGI_APPLICATION = 'Urban_Trash.asgi.application'
 
 
@@ -110,13 +110,22 @@ ASGI_APPLICATION = 'Urban_Trash.asgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'Urbantrash',
+    #     'USER': 'postgres',
+    #     'PASSWORD': '123',
+    #     'HOST': 'localhost',
+    # }
+
+        'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Urbantrash',
-        'USER': 'postgres',
+        'NAME': 'postgres',
+        'USER': 'misbah',
         'PASSWORD': '123',
         'HOST': 'localhost',
     }
+
 }
 
 
