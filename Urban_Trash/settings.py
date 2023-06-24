@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     # 'knox',
     # 'rest_framework_jwt',
     # 'channels',
-    # 'allauth',
+    'allauth',
     # 'rest_framework.authtoken',
 ]
 

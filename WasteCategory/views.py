@@ -123,6 +123,7 @@ class BioWastes(APIView):
 
 # ================ Bio Waste List ====================#
 
+
 class BioWasteListAPIView(APIView):
     def get(self, request):
         try:
