@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.exceptions import APIException
 from .models import ScrapCategory, ScrapWaste
 from rest_framework import generics
+from AdminSide.permissions import IsTokenVerified
 
 
 # Create your views here.
@@ -14,14 +15,13 @@ from rest_framework import generics
 
 
 class ScrapCategoryAPIView(APIView):
-
+    permission_classes = [IsTokenVerified]
     serializer_class = ScrapCategorySerializer
 
     def get(self, request):
         try:
             waste_category = ScrapCategory.objects.all()
             serializer = self.serializer_class(waste_category, many=True)
-            print("they are printing a scrapcategory but cant get this-----==========",serializer)
             return Response(serializer.data)
         except ScrapCategory.DoesNotExist:
             return Response(
@@ -32,10 +32,8 @@ class ScrapCategoryAPIView(APIView):
     def post(self, request):
         try:
             serializer = self.serializer_class(data=request.data)
-            print("printing a waste category data field==========",request.data)
             if serializer.is_valid():
                 serializer.save()
-                print("////////////////",request.data)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except ScrapCategory.DoesNotExist:
@@ -48,6 +46,7 @@ class ScrapCategoryAPIView(APIView):
 # =========================== Scrap Category Edit ===========================#
 
 class ScrapCategoryEditAPIVIEW(APIView):
+    permission_classes = [IsTokenVerified]
     serializer_class = ScrapCategorySerializer
     def get_object(self, id):
         try:
@@ -77,6 +76,7 @@ class ScrapCategoryEditAPIVIEW(APIView):
 # ============================= Scrap Category LIst ============================#
 
 class ScrapCategoryListAPIView(APIView):
+    permission_classes = [IsTokenVerified]
     def get(self, request, id=None):
         if id is not None:
             try:
@@ -94,16 +94,14 @@ class ScrapCategoryListAPIView(APIView):
 # ========================== Scrap Waste =============================#
 
 class ScrapWastes(APIView):
+    permission_classes = [IsTokenVerified]
     serializer_class = ScrapWasteSerializer
 
     def post(self, request):
         try:
             serializer = self.serializer_class(data=request.data)
-            print("/././././././././././././././././",request.data)
             if serializer.is_valid():
-                    print("/././././././././.scrap Entered here but not saving >>>>>>")
                     serializer.save()
-                    print("The problem is ==>>>")
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
@@ -117,6 +115,7 @@ class ScrapWastes(APIView):
 
 
 class ScrapWasteListAPIView(APIView):
+    permission_classes = [IsTokenVerified]
     def get(self, request):
         try:
             scrap_waste = ScrapWaste.objects.all()
@@ -130,6 +129,7 @@ class ScrapWasteListAPIView(APIView):
 
 
 class ScrapWasteEditAPIView(APIView):
+    permission_classes = [IsTokenVerified]
     serializer_class = ScrapWasteSerializer
 
     def get_object(self, id):

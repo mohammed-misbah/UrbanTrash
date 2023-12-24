@@ -55,3 +55,9 @@ def decode_refresh_token(token):
         return payload['user_id']
     except:
         raise exceptions.AuthenticationFailed('unauthenticated')
+    
+
+class LoginSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'password']

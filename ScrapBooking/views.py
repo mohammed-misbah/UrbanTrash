@@ -18,19 +18,14 @@ class ScrapBookings(APIView):
     def post(self, request):
         try:
             serializer = ScrapPickupSerializer(data=request.data)
-            print('///////\\\\\\\\////////////\\\\\\\\\\\\>>>>>>>>>>><<<<<<<<<<>>>>>>>',request.data)
             if serializer.is_valid():
-                print('<><><><><><><><><><><><><><><><><><><><><')
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
-                print('===============<<<<<<<<<<<<<<<<>>>>>>>>>>>>>==================',request.data)
                 errors = serializer.errors
-                print(' <><><><><><><><><><><><><><><><><><><><><',request.data)
                 if 'address' in errors and isinstance(errors['address'], list) and errors['address']:
                     if 'pk' in errors['address'][0]:
                         errors['address'] = ['Invalid address ID']
-                        print('the values are atempt but cant ====================>>>>>>>>>>>>>>>>>>>>>>>')
                 return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         except APIException as e:
             return Response(
@@ -56,11 +51,8 @@ class ScrapPickupUpdatesAPI(APIView):
             scrap_pickup = ScrapPickup.objects.get(id=  id)
 
             scrap_pickup.price = request.data["price"]
-            print("scraaaaap price",scrap_pickup.price)
             scrap_pickup.scrap_weight = request.data["scrap_weight"]
-            print("scraaap weight",scrap_pickup.scrap_weight)
             scrap_pickup.pickup_status = request.data["pickup_status"]
-            print("scraaaaaap status",scrap_pickup.pickup_status)
 
             if 1 < 9:
                 return Response(status=status.HTTP_200_OK)
@@ -149,11 +141,8 @@ class AdminPickuplistAPIView(APIView):
 #     def post(self, request,id):
 #         try:
 #             user = User.objects.get(id=id)
-#             print("uuuuuuuuuuser enteeeeeeeeeered",user)
 #             orders = ScrapPickupDetail.objects.filter(customer= user)
-#             print("ooooooooooooooorder deeeeeeeeeeetails",orders, user)
 #             serializer = ScrapOrderDetailSerializer(orders, many=True)
-#             print("seeeeeeeeeeerilizer dataaaaaaaaaaaaaas",serializer)
 #             return Response(serializer.data)
 #         except APIException as e:
 #             return Response({'Orderdetailist': str(e)},
