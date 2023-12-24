@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.exceptions import APIException
 from .models import ScrapCategory, ScrapWaste
 from rest_framework import generics
-from AdminSide.permissions import IsTokenVerified
+# from AdminSide.permissions import IsTokenVerified
 
 
 # Create your views here.
@@ -15,7 +15,7 @@ from AdminSide.permissions import IsTokenVerified
 
 
 class ScrapCategoryAPIView(APIView):
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     serializer_class = ScrapCategorySerializer
 
     def get(self, request):
@@ -46,7 +46,7 @@ class ScrapCategoryAPIView(APIView):
 # =========================== Scrap Category Edit ===========================#
 
 class ScrapCategoryEditAPIVIEW(APIView):
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     serializer_class = ScrapCategorySerializer
     def get_object(self, id):
         try:
@@ -76,7 +76,7 @@ class ScrapCategoryEditAPIVIEW(APIView):
 # ============================= Scrap Category LIst ============================#
 
 class ScrapCategoryListAPIView(APIView):
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     def get(self, request, id=None):
         if id is not None:
             try:
@@ -94,7 +94,7 @@ class ScrapCategoryListAPIView(APIView):
 # ========================== Scrap Waste =============================#
 
 class ScrapWastes(APIView):
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     serializer_class = ScrapWasteSerializer
 
     def post(self, request):
@@ -115,7 +115,7 @@ class ScrapWastes(APIView):
 
 
 class ScrapWasteListAPIView(APIView):
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     def get(self, request):
         try:
             scrap_waste = ScrapWaste.objects.all()
@@ -129,7 +129,7 @@ class ScrapWasteListAPIView(APIView):
 
 
 class ScrapWasteEditAPIView(APIView):
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     serializer_class = ScrapWasteSerializer
 
     def get_object(self, id):

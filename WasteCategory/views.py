@@ -9,7 +9,7 @@ from rest_framework.exceptions import APIException
 from rest_framework.exceptions import NotFound,ValidationError
 # from drf_spectacular.utils import extend_schema
 from rest_framework import generics
-from AdminSide.permissions import IsTokenVerified
+# from AdminSide.permissions import IsTokenVerified
 
 # Create your views here.
 
@@ -18,7 +18,7 @@ from AdminSide.permissions import IsTokenVerified
 
 
 class WasteCategoryAPIVIEW(APIView):
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     serializer_class = WasteCategorySerializer
 
     def get(self, request):
@@ -49,7 +49,7 @@ class WasteCategoryAPIVIEW(APIView):
 
 
 class WasteCategoryEditAPIVIEW(APIView):
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     serializer_class = WasteCategorySerializer
     
     def get_object(self, id):
@@ -82,7 +82,7 @@ class WasteCategoryEditAPIVIEW(APIView):
 
 class WasteCategoryListAPIView(APIView):
 
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     def get(self, request, id=None):  
         if id is not None:
             try:
@@ -103,7 +103,7 @@ class WasteCategoryListAPIView(APIView):
 
 class BioWastes(APIView):
 
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     serializer_class = BioWasteSerializer       
 
     def post(self, request):
@@ -126,7 +126,7 @@ class BioWastes(APIView):
 
 class BioWasteListAPIView(APIView):
 
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     def get(self, request):
         try:
             bio_waste = BioWaste.objects.all()
@@ -141,7 +141,7 @@ class BioWasteListAPIView(APIView):
 
 
 class BioWasteEditAPIVIEW(APIView):
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
 
     serializer_class = BioWasteSerializer
 

@@ -8,7 +8,7 @@ import jwt , datetime
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import APIException
-from .permissions import IsTokenVerified
+# from .permissions import IsTokenVerified
 from .serializers import UserSerializer
 from jwt import DecodeError, ExpiredSignatureError
 
@@ -112,7 +112,7 @@ class LogoutView(APIView):
     
 
 class UserListView(APIView):
-    permission_classes = [IsTokenVerified]
+    # permission_classes = [IsTokenVerified]
     @extend_schema(responses=UserSerializer)
     def get(self, request):
         user = User.objects.all()
