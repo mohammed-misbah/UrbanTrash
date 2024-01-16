@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, LoginView, LogoutView, UserListView,BlockUser,UnBlockUser
+from .views import RegisterView, LoginView, LogoutView, UserListView
 from . import views
 
 
@@ -9,8 +9,8 @@ urlpatterns = [
     path('verify_token/',views.verify_token,name='verify_token'),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('userlist/', UserListView.as_view(), name="userlist"),
-    path('block_user/<int:id>/', BlockUser.as_view(), name="block_user"),
-    path('unblock_user/<int:id>/', UnBlockUser.as_view(), name="unblock_user")
+    path('block_user/<int:id>/', views.block_user, name='block_user'),
+    path('unblock_user/<int:id>/', views.unblock_user, name='block_user'),
     # path('user', UserView.as_view(), name="user"),
     # path('userapi/', UserApi.as_view(), name="userapi"),
 ]

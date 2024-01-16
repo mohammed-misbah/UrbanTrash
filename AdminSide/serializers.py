@@ -17,9 +17,10 @@ class UserSerializer(ModelSerializer):
         instance = self.Meta.model(**validated_data)
         if password is not None:
             instance.set_password(password)
-        instance.is_admin = True
+        instance.is_superuser = True
         instance.save()
         return instance
+
 
     
 

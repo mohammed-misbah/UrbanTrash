@@ -15,7 +15,7 @@ from rest_framework import generics
 
 
 class ScrapCategoryAPIView(APIView):
-    # permission_classes = [IsTokenVerified]
+    # permissiPreferences: Open Settings (JSON)on_classes = [IsTokenVerified]
     serializer_class = ScrapCategorySerializer
 
     def get(self, request):
