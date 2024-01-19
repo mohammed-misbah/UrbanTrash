@@ -84,8 +84,8 @@ class LoginView(APIView):
                 }
 
                 token = jwt.encode(payload, 'secret', algorithm='HS256')
-                print(token, "token is")
-                return Response({'status': "Success", 'payload': payload, 'user_jwt': token, 'user': userdetails})
+                print(token,"getting a token")
+                return Response({'status': "Success", 'payload': payload, 'jwt': token, 'user': userdetails})
         except:
             if User.DoesNotExist:
                 return Response("Email or Password is Wrong")
@@ -98,26 +98,29 @@ class LoginView(APIView):
 def verify_token(request):
     try:
         token = request.headers.get('Authorization')
+        print(token, "toooooooooooken>>>>>>>>>>>")
         decoded = jwt.decode(token, 'secret', algorithms='HS256')
         id = decoded.get('id')
-        user = User.objects.get(id=id)  
+        user = User.objects.get(id=id)
 
         if user:
-            userdetails ={
-                        'id':user.id,
-                        'name': user.name,
-                        'email' : user.email,
-                        'phone': user.phone,
-                    }
-        
-            return Response({'user':userdetails})
+            userdetails = {
+                'id': user.id,
+                'name': user.name,
+                'email': user.email,
+                'phone': user.phone,
+            }
+
+            return Response({'user': userdetails})
         else:
-            return Response({'status' : 'Token Invalid'})
+            return Response({'status': 'Token Invalid'})
     except APIException as e:
         return Response(
-                {'verify_errors': str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            {
+                'verify_errors': str(e)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 # ==================== OTP Login =====================# 
 
