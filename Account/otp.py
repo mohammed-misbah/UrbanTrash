@@ -3,7 +3,6 @@
 import requests
 
 def send_request(phonenumber):
-  # print("in otp",phonenumber)
   url = "https://verificationapi-v1.sinch.com/verification/v1/verifications"
   payload="{\n  \"identity\": {\n  \"type\": \"number\",\n  \"endpoint\": \"+91"+format(phonenumber)+"\"\n  },\n  \"method\": \"sms\"\n}"
   headers = {

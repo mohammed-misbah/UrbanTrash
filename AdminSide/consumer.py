@@ -16,7 +16,6 @@ class notification(WebsocketConsumer):
         self.room_group_name = "chat_%s" % self.room_name
         try:
             token_key = self.scope['query_string'].decode().split('=')
-            print(token_key, " Token key is printed")
 
             # Check if the token is a refresh token, in which case authentication is not needed
             decoded_token = jwt.decode(token_key[1], 'secret', algorithms=['HS256'])
@@ -54,7 +53,6 @@ class notification(WebsocketConsumer):
     # Receive message from room group
     def chat_message(self, event):
         message = event["message"]
-        print(message,"message printed")
 
         serializer = NotificationSerializer(data={
            "user": self.scope['user'].id, # Provide the user ID here
@@ -64,14 +62,9 @@ class notification(WebsocketConsumer):
     
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            print("Data saved successfully:")
-            print( self.scope['user'].is_admin)
-            print( self.scope['user'].name)
             if self.scope['user'].is_admin == True:
-                print("status")
                 self.send(text_data=json.dumps({"message": message}))
         else:
-            print("Serializer errors:", serializer.errors)
             raise AuthenticationFailed(f'AuthenticationFailed {serializer.errors}')
         # Send message to WebSocket
         

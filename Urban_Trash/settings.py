@@ -83,7 +83,6 @@ ROOT_URLCONF = 'Urban_Trash.urls'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-
 CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
@@ -114,8 +113,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'Urbantrash',
         'USER': 'postgres',
-        'PASSWORD': '123',
+        'PASSWORD': 'mypostgres',
         'HOST': 'localhost',
+        'PORT': '5432'
     }
 
     # 'default': {
@@ -181,6 +181,8 @@ MEDIA_ROOT = BASE_DIR/'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+# AUTH_USER_MODEL = 'Account.User'
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`

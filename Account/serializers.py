@@ -5,12 +5,10 @@ from rest_framework import exceptions
 from rest_framework import serializers
 
 
-class UserSerializer(serializers.ModelSerializer):
-    phone = serializers.CharField(default='', allow_blank=True)
-    otp = serializers.CharField(write_only=True, required=False)
+class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'name', 'email','phone', 'password', 'otp']
+        fields = ['id', 'name', 'email', 'phone', 'password']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -20,10 +18,15 @@ class UserSerializer(serializers.ModelSerializer):
         instance = self.Meta.model(**validated_data)
         if password is not None:
             instance.set_password(password)
-        
+
         instance.save()
         return instance
     
+
+class LoginSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'password']
 
 
 def create_access_token(id):
@@ -55,3 +58,4 @@ def decode_refresh_token(token):
         return payload['user_id']
     except:
         raise exceptions.AuthenticationFailed('unauthenticated')
+    

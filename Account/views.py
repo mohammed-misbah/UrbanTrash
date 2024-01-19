@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from .serializers import UserSerializer
+from .serializers import UserSerializer, LoginSerializer
 from .models import User
 import jwt , datetime
 from rest_framework import status
@@ -14,50 +14,114 @@ import json
 import jwt
 import cloudinary
 from cloudinary.uploader import upload
+from drf_spectacular.utils import extend_schema
+from jwt.exceptions import DecodeError
+from django.conf import settings
 # from .otp import send_request,verify_Otp
 
 
 # Create your views here.
 
-
 class RegisterView(APIView):
+    @extend_schema(
+        responses=UserSerializer,
+        request=UserSerializer,)
+    @extend_schema(responses=UserSerializer)
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+        try:
+            data = request.data
+            email = data.get('email')
+            if User.objects.filter(email=email).exists():
+                return Response({"status": "Email already exists"}, status=status.HTTP_409_CONFLICT)
+
+            serializer = UserSerializer(data=data)
+            if not serializer.is_valid():
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                user = serializer.save()
+                return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+        except APIException as e:
+            return Response(
+                {
+                    'register_errors': str(e)
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 # ============================= User Login ========================#
 
 class LoginView(APIView):
+
+    @extend_schema(
+        responses=LoginSerializer,
+        # Assuming the request schema is the same as the response schema
+        request=LoginSerializer,
+    )
     def post(self, request):
-        email = request.data['email']
-        password = request.data['password']
-
+        try:
+            email = request.data['email']
+            password = request.data['password']
+        except:
+            return Response({'status': 'Please provide the mentioned details'})
         user = User.objects.filter(email=email).first()
+        # print(user.password)
+        try:
+            user = User.objects.get(email=email)
+            if not user.check_password(password):
+                Response({'status': 'Password is incorrect'})
+            if user is not None:
+                # user = LoginSerializer(user)
+                payload = {
+                    'id': user.id,
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7),
+                    'iat': datetime.datetime.utcnow(),
+                    'name': user.name
+                }
+                userdetails = {
+                    'name': user.name,
+                    'email': user.email,
+                    'phone': user.phone,
+                }
 
-        if user is None:
-            raise AuthenticationFailed('User not found!')
-
-        if not user.check_password(password):
-            raise AuthenticationFailed('Incorrect password!')
-
-        payload = {
-            'id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
-            'iat': datetime.datetime.utcnow()
-        }
-
-        token = jwt.encode(payload, 'secret', algorithm='HS256')
-
-        response = Response()
-
-        # response.set_cookie(key='jwt', value=token, httponly=True)
-        response.data = {
-            'jwt': token
-        }
-        return response
+                token = jwt.encode(payload, 'secret', algorithm='HS256')
+                print(token,"getting a token")
+                return Response({'status': "Success", 'payload': payload, 'jwt': token, 'user': userdetails})
+        except:
+            if User.DoesNotExist:
+                return Response("Email or Password is Wrong")
     
+
+# ====================Verifying Token =====================#
+
+
+@api_view(['GET'])
+def verify_token(request):
+    try:
+        token = request.headers.get('Authorization')
+        print(token, "toooooooooooken>>>>>>>>>>>")
+        decoded = jwt.decode(token, 'secret', algorithms='HS256')
+        id = decoded.get('id')
+        user = User.objects.get(id=id)
+
+        if user:
+            userdetails = {
+                'id': user.id,
+                'name': user.name,
+                'email': user.email,
+                'phone': user.phone,
+            }
+
+            return Response({'user': userdetails})
+        else:
+            return Response({'status': 'Token Invalid'})
+    except APIException as e:
+        return Response(
+            {
+                'verify_errors': str(e)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
 # ==================== OTP Login =====================# 
 
 
@@ -86,45 +150,12 @@ class OTPloginAPIView(APIView):
         except Exception as e:
             return Response({'status':"Error occur while otp generating"})
         
-
-# ====================Verifying Token =====================#
-
-
-@api_view(['GET'])
-def verify_token(request):
-    token = request.headers.get('Authorization')
-    print(token,'token is printed')
-    try:
-        token = request.headers.get('Authorization')
-        decoded = jwt.decode(token, 'secret', algorithms='HS256')
-        id = decoded.get('id')
-        user = User.objects.get(id=id)  
-
-        if user:
-            userdetails ={
-                        'id':user.id,
-                        'name': user.name,
-                        'email' : user.email,
-                        'phone': user.phone,
-                    }
-        
-            return Response({'user':userdetails})
-        else:
-            return Response({'status' : 'Token Invalid'})
-    except APIException as e:
-        return Response(
-                {'verify_errors': str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
 # ==================== LogOut ==========================#
 
 
 class LogoutView(APIView):
     def post(self, request):
-        print("===============>>>>>>>>>>>>")
         response = Response()
-        print("<<<<<<<<<<<=============")
         response.delete_cookie('jwt')
         print('deleted')
         response.data = {
@@ -205,15 +236,3 @@ class GoogleLogin(APIView):
                 {'error': str(e)},status=status.HTTP_400_BAD_REQUEST
             )
         
-
-
-
-
-
-
-
-
-
-
-
-                

@@ -18,19 +18,14 @@ class WasteBookings(APIView):
     def post(self, request):
         try:
             serializer = WastePickupSerializer(data=request.data)
-            print('////////////\\\\\\\\\\\\>>>>>>>>>>><<<<<<<<<<>>>>>>>',request.data)
             if serializer.is_valid():
-                print('<><><><><><><><><><><><><><><><><><><><><')
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
-                print('===============<<<<<<<<>>>>>>==================',request.data)
                 errors = serializer.errors
-                print(' <><><><><><><><><><><><><><><><><><><><><',request.data)
                 if 'address' in errors and isinstance(errors['address'], list) and errors['address']:
                     if 'pk' in errors['address'][0]:
                         errors['address'] = ['Invalid address ID']
-                        print('the values are atempt but cant ===============>>>>>>>>>>>>>>')
                 return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         except APIException as e:
             return Response(
@@ -58,11 +53,8 @@ class   WasteOrderUpdatesAPI(APIView):
             pickup = WastePickup.objects.get(id=id)
         
             pickup.price = request.data['price'] 
-            print("pickup price",pickup.price)
             pickup.waste_weight = request.data['waste_weight']
-            print("pickup waste weightttttt",pickup.waste_weight)
             pickup.status = request.data['status']
-            print("picccccckup staaaatus",pickup.status)
             pickup.save()
 
             if 1 < 9:
@@ -148,11 +140,8 @@ class PickupListAPIView(APIView):
 #     def post(self, request,id):
 #         try:
 #             user = User.objects.get(id=id)
-#             print("uuuuuuuuuuser enteeeeeeeeeered",user)
 #             orders = WastePickDetail.objects.filter(customer= user)
-#             print("ooooooooooooooorder deeeeeeeeeeetails",orders, user)
 #             serializer = OrderDetailSerializer(orders, many=True)
-#             print("seeeeeeeeeeerilizer dataaaaaaaaaaaaaas",serializer)
 #             return Response(serializer.data)
 #         except APIException as e:
 #             return Response({'Orderdetailist': str(e)},

@@ -26,9 +26,7 @@ class AddressListAPIView(APIView):
         try:
             userId = id 
             address = Address.objects.filter(user=userId)
-            print('<<<<<<<<<<<<<<<<<<<<<<<================',userId)
             serializer = AddressSerializer(address, many=True)
-            print('================>>>>>>>>>>>>>>>>>>>>>>>',address)
             return Response(serializer.data)
         except APIException as e:
             return Response(
@@ -39,12 +37,9 @@ class AddressPostAPIView(APIView):
         def post(self, request):
             try:
                 serializer = AddressPostSerializer(data=request.data)
-                print("======================",dict(request.data))
                 
                 if serializer.is_valid():
-                    print("they printing an error=======--------->>>>>>>>")
                     serializer.save()
-                    print(">>>>>>>>>>>>>>>>>>",serializer.data)
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -61,18 +56,14 @@ class UserProfileAPIView(APIView):
 
     def get(self, id):
         name = User.objects.get(id=id) 
-        print('user ID:', id)
         serializer = self.serializer_class(name, many=False) 
-        print('name:', name)
         return Response(serializer.data)
 
         
     def post(self, request, id):
         try:
             serializer = self.serializer_class(data=request.data)
-            print("KKKKKKKKKKKKKKKKKKK>|>|>The hero ID is =========>>>>>>>>> ", request.data)
             if serializer.is_valid():
-                print("they printing an error=======--------->>>>>>>>")
                 serializer.save(user_id=id)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
