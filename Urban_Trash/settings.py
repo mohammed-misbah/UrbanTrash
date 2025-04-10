@@ -234,7 +234,6 @@ CHANNEL_LAYERS = {
 }
 
 
-
 EMAIL_HOST = 'smtp.mailgun.org'  
 EMAIL_PORT = 587  
 EMAIL_HOST_USER = 'mizbaofficial369@gmial.com' 
